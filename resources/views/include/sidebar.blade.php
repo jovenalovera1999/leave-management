@@ -15,7 +15,7 @@
                 <li><a href="#"><span>DASHBOARD</span></a></li>
                 <li><a href="#"><span>APPROVED</span></a></li>
                 <li><a href="#"><span>PENDING</span></a></li>
-                <li><a href="#"><span>EMPLOYEES</span></a></li>
+                <li><a href="/employees"><span>EMPLOYEES</span></a></li>
                 <li><a href="#"><span>DEPARTMENTS</span></a></li>
                 <li><a href="#"><span>POSITIONS</span></a></li>
                 <li><a href="#"><span>LEAVES TYPE</span></a></li>

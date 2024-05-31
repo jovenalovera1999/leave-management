@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('employee.index');
+    return view('welcome');
+});
+
+Route::controller(EmployeeController::class)->group(function() {
+    Route::get('/employees', 'index');
+    Route::get('/employee/create', 'create');
+    Route::get('/employee/edit/{employee_id}', 'edit');
+    Route::get('/employee/delete/{employee_id}', 'delete');
+
+    Route::post('/employee/store', 'store');
+    Route::put('/employee/update/{employee}', 'update');
+    Route::delete('/employee/destroy/{employee}', 'destroy');
 });

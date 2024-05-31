@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tbl_applies', function (Blueprint $table) {
-            $table->id();
+            $table->id('apply_id');
+            $table->unsignedBigInteger('employee_id');
+            $table->date('date_from');
+            $table->date('date_to');
+            $table->double('regular_balance')->default(0);
+            $table->double('remaining_balance')->default(0);
+            $table->tinyInteger('is_approved')->default(false);
+            $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('contact_number', 55);
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('position_id');
+            $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
 
             $table->foreign('gender_id')

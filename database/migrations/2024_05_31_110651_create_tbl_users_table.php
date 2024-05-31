@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('middle_name', 55)->nullable();
             $table->string('last_name', 55);
             $table->string('suffix_name', 55)->nullable();
-            $table->string('username', 55);
+            $table->string('username', 55)->unique();
             $table->string('password', 255);
             $table->timestamps();
         });
