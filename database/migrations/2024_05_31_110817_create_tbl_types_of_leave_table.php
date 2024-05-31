@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_users', function (Blueprint $table) {
-            $table->id('user_id');
-            $table->string('first_name', 55);
-            $table->string('middle_name', 55)->nullable();
-            $table->string('last_name', 55);
-            $table->string('suffix_name', 55)->nullable();
-            $table->string('username', 55)->unique();
-            $table->string('password', 255);
+        Schema::create('tbl_types_of_leave', function (Blueprint $table) {
+            $table->id('leave_id');
+            $table->string('leave');
             $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
         });
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_users');
+        Schema::dropIfExists('tbl_types_of_leave');
     }
 };

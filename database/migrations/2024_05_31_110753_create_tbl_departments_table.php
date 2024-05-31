@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tbl_departments', function (Blueprint $table) {
             $table->id('department_id');
             $table->string('department', 55);
+            $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
         });
     }

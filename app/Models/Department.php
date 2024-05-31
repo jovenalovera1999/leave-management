@@ -13,5 +13,6 @@ class Department extends Model
     protected $primaryKey = 'department_id';
     protected $fillable = [
         'department',
+        'is_deleted',
     ];
 }

@@ -8,6 +8,7 @@
 
 <main id="main">
     <div class="container-fluid">
+        @include('include.navbar')
         @include('include.message')
         <div class="card mt-2">
             <div class="card-body">
@@ -15,6 +16,11 @@
                     <h5 class="card-title">LIST OF EMPLOYEES</h5>
                     <a href="/employee/create" class="btn btn-primary">ADD EMPLOYEE</a>
                 </div>
+                <form action="/employees" method="get">
+                    <label for="search">SEARCH</label>
+                    <input type="text" class="form-control mb-3" name="search" id="search" />
+                </form>
+                {{ $employees->links() }}
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -28,20 +34,18 @@
                                 <th scope="col">CONTACT NUMBER</th>
                                 <th scope="col">DEPARTMENT</th>
                                 <th scope="col">POSITION</th>
-                                <th scope="col">DATE CREATED</th>
                                 <th scope="col">ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
-                                $num = 1;
+                                $num = ($employees->currentPage() - 1) * $employees->perPage() + 1;
                             @endphp
-
                             @foreach ($employees as $employee)
                                 <tr>
                                     <td>{{ $num++ }}</td>
                                     <td>
-                                        {{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . ' ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}
+                                        {{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}
                                     </td>
                                     <td>{{ $employee->gender }}</td>
                                     <td>{{ date('m/d/Y', strtotime($employee->birth_date)) }}</td>
@@ -50,7 +54,6 @@
                                     <td>{{ $employee->contact_number }}</td>
                                     <td>{{ $employee->department }}</td>
                                     <td>{{ $employee->position }}</td>
-                                    <td>{{ date('m/d/Y, h:i A', strtotime($employee->created_at)) }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="/employee/edit/{{ $employee->employee_id }}" class="btn btn-primary">EDIT</a>
@@ -62,6 +65,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{ $employees->links() }}
             </div>
         </div>
     </div>

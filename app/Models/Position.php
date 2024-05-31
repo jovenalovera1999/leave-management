@@ -13,5 +13,6 @@ class Position extends Model
     protected $primaryKey = 'position_id';
     protected $fillable = [
         'position',
+        'is_deleted',
     ];
 }

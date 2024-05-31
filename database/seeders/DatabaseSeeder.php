@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\Gender;
 use App\Models\Position;
 use Illuminate\Database\Seeder;
@@ -126,5 +127,7 @@ class DatabaseSeeder extends Seeder
         Position::factory()->create([
             'position' => 'PART-TIME FACULTY',
         ]);
+
+        Employee::factory(100)->create();
     }
 }

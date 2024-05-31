@@ -16,7 +16,28 @@ class EmployeeController extends Controller
             ->leftJoin('tbl_departments', 'tbl_employees.department_id', '=', 'tbl_departments.department_id')
             ->leftJoin('tbl_positions', 'tbl_employees.position_id', '=', 'tbl_positions.position_id')
             ->where('tbl_employees.is_deleted', false)
-            ->get();
+            ->orderBy('tbl_employees.last_name', 'asc')
+            ->orderBy('tbl_employees.first_name', 'asc')
+            ->orderBy('tbl_employees.middle_name', 'asc');
+
+        if(request()->has('search')) {
+            $searchTerm = request()->get('search');
+
+            if($searchTerm) {
+                $employees = $employees->where(function($query) use($searchTerm) {
+                    $query->where('tbl_employees.first_name', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_employees.middle_name', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_employees.last_name', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_genders.gender', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_employees.address', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_departments.department', 'like', "%$searchTerm%")
+                        ->orWhere('tbl_positions.position', 'like', "%$searchTerm%");
+                });
+            }
+        }
+
+        $employees = $employees->paginate(25)
+            ->appends(['search' => request()->get('search')]);
 
         return view('employee.index', compact('employees'));
     }
@@ -40,7 +61,7 @@ class EmployeeController extends Controller
             'suffix_name' => ['nullable'],
             'gender' => ['required'],
             'birth_date' => ['required', 'date'],
-            'address' => ['required', 'max:55'],
+            'address' => ['required', 'max:255'],
             'contact_number' => ['required', 'numeric'],
             'department' => ['required'],
             'position' => ['required'],
@@ -57,20 +78,20 @@ class EmployeeController extends Controller
         $age = $birthDate->diff($today)->y;
 
         Employee::create([
-            'first_name' => $validated['first_name'],
-            'middle_name' => $validated['middle_name'],
-            'last_name' => $validated['last_name'],
-            'suffix_name' => $validated['suffix_name'],
+            'first_name' => strtoupper($validated['first_name']),
+            'middle_name' => strtoupper($validated['middle_name']),
+            'last_name' => strtoupper($validated['last_name']),
+            'suffix_name' => strtoupper($validated['suffix_name']),
             'gender_id' => $validated['gender'],
             'birth_date' => $validated['birth_date'],
             'age' => $age,
-            'address' => $validated['address'],
+            'address' => strtoupper($validated['address']),
             'contact_number' => $validated['contact_number'],
             'department_id' => $validated['department'],
             'position_id' => $validated['position'],
         ]);
 
-        return redirect('/employees')->with('success', 'Employee successfully saved.');
+        return redirect('/employees')->with('success', 'EMPLOYEE SUCCESSFULLY ADDED.');
     }
 
     public function edit($employee_id) {
@@ -97,7 +118,7 @@ class EmployeeController extends Controller
             'suffix_name' => ['nullable'],
             'gender' => ['required'],
             'birth_date' => ['required', 'date'],
-            'address' => ['required', 'max:55'],
+            'address' => ['required', 'max:255'],
             'contact_number' => ['required', 'numeric'],
             'department' => ['required'],
             'position' => ['required'],
@@ -114,20 +135,20 @@ class EmployeeController extends Controller
         $age = $birthDate->diff($today)->y;
 
         $employee->update([
-            'first_name' => $validated['first_name'],
-            'middle_name' => $validated['middle_name'],
-            'last_name' => $validated['last_name'],
-            'suffix_name' => $validated['suffix_name'],
+            'first_name' => strtoupper($validated['first_name']),
+            'middle_name' => strtoupper($validated['middle_name']),
+            'last_name' => strtoupper($validated['last_name']),
+            'suffix_name' => strtoupper($validated['suffix_name']),
             'gender_id' => $validated['gender'],
             'birth_date' => $validated['birth_date'],
             'age' => $age,
-            'address' => $validated['address'],
+            'address' => strtoupper($validated['address']),
             'contact_number' => $validated['contact_number'],
             'department_id' => $validated['department'],
             'position_id' => $validated['position'],
         ]);
 
-        return redirect('/employees')->with('success', 'Employee successfully updated.');
+        return redirect('/employees')->with('success', 'EMPLOYEE SUCCESSFULLY UPDATED.');
     }
 
     public function delete($employee_id){
@@ -144,6 +165,6 @@ class EmployeeController extends Controller
             'is_deleted' => true,
         ]);
 
-        return redirect('/employees')->with('success', 'Employee successfully deleted.');
+        return redirect('/employees')->with('success', 'EMPLOYEE SUCCESSFULLY DELETED.');
     }
 }

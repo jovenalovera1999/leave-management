@@ -8,6 +8,7 @@
 
 <main id="main">
     <div class="container-fluid">
+        @include('include.navbar')
         <div class="card mt-2">
             <div class="card-body">
                 <h5 class="card-title">ADD EMPLOYEE</h5>
