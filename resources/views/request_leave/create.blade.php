@@ -11,7 +11,7 @@
         @include('include.navbar')
         @include('include.message')
         <div class="card mt-2">
-            <form action="#" method="post">
+            <form action="/request/leave/store" method="post">
                 @csrf
                 <div class="card-body">
                     <h5 class="card-title">ADD REQUEST LEAVE</h5>
@@ -26,36 +26,69 @@
                                         <option value="{{ $employee->employee_id }}">{{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('employee')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="regular_salary">REGULAR SALARY</label>
                                 <input type="text" class="form-control" name="regular_salary" id="regular_salary" />
+                                @error('regular_salary')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">REGULAR SCHEDULE</h5>
+                            <h5 class="card-title">REGULAR DATE SCHEDULE</h5>
                             <div class="mb-3">
                                 <label for="regular_schedule_date_from">FROM</label>
                                 <input type="date" class="form-control" name="regular_schedule_date_from" id="regular_schedule_date_from" />
+                                @error('regular_schedule_date_from')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="regular_schedule_date_to">TO</label>
                                 <input type="date" class="form-control" name="regular_schedule_date_to" id="regular_schedule_date_to" />
+                                @error('regular_schedule_date_to')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">LEAVE DATE</h5>
+                            <h5 class="card-title">LEAVE DETAILS</h5>
+                            <div class="mb-3">
+                                <label for="leave">LEAVE TYPE</label>
+                                <select class="form-select" name="leave" id="leave">
+                                    <option value="" selected>N/A</option>
+                                    @foreach ($leaves as $leave)
+                                        <option value="{{ $leave->leave_id }}">{{ $leave->leave }}</option>
+                                        @if (old('leave') == $leave->leave_id)
+                                            <option value="{{ $leave->leave_id }}" selected hidden>{{ $leave->leave }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @error('leave')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="mb-3">
                                 <label for="leave_date_from">FROM</label>
                                 <input type="date" class="form-control" name="leave_date_from" id="leave_date_from" />
+                                @error('leave_date_from')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="leave_date_to">TO</label>
                                 <input type="date" class="form-control" name="leave_date_to" id="leave_date_to" />
+                                @error('leave_date_to')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -65,10 +98,16 @@
                             <div class="mb-3">
                                 <label for="attended_date_from">FROM</label>
                                 <input type="date" class="form-control" name="attended_date_from" id="attended_date_from" />
+                                @error('attended_date_from')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="attended_date_to">TO</label>
                                 <input type="date" class="form-control" name="attended_date_to" id="attended_date_to" />
+                                @error('attended_date_to')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -77,17 +116,20 @@
                             <h5 class="card-title">SALARY DETAILS</h5>
                             <div class="mb-3">
                                 <label for="salary_deduction_per_day">SALARY DEDUCTION PER DAY</label>
-                                <input type="text" class="form-control" name="salary_deduction_per_day" id="salary_deduction_per_day" />
+                                <input type="text" class="form-control" name="salary_deduction_per_day" id="salary_deduction_per_day" readonly />
                             </div>
                             <div class="mb-3">
                                 <label for="deducted_salary">DEDUCTED SALARY</label>
-                                <input type="text" class="form-control" name="deducted_salary" id="deducted_salary" />
+                                <input type="text" class="form-control" name="deducted_salary" id="deducted_salary" readonly />
                             </div>
                             <div class="mb-3">
                                 <label for="final_salary">FINAL SALARY</label>
                                 <input type="number" step="0.01" class="form-control" name="final_salary" id="final_salary" readonly />
                             </div>
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">SAVE REQUEST</button>
                     </div>
                 </div>
             </form>

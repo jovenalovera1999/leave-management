@@ -12,8 +12,7 @@
         <nav id="navbar" class="nav-menu navbar">
             <ul>
                 <li><a href="#"><span>DASHBOARD</span></a></li>
-                <li><a href="#"><span>APPROVED LEAVES</span></a></li>
-                <li><a href="#"><span>REQUEST FORM LEAVE</span></a></li>
+                <li><a href="/request/leaves"><span>REQUEST LEAVES</span></a></li>
                 <li><a href="/employees"><span>EMPLOYEES</span></a></li>
                 <li><a href="/departments"><span>DEPARTMENTS</span></a></li>
                 <li><a href="/positions"><span>POSITIONS</span></a></li>

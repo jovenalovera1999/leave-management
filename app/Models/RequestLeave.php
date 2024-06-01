@@ -14,13 +14,16 @@ class RequestLeave extends Model
     protected $fillable = [
         'employee_id',
         'regular_salary',
-        'regular schedule_date_from',
+        'regular_schedule_date_from',
         'regular_schedule_date_to',
+        'leave_id',
         'leave_date_from',
         'leave_date_to',
-        'salary_deduction',
-        'leave_id',
-        'remaining_days',
+        'attended_date_from',
+        'attended_date_to',
+        'salary_deduction_per_day',
+        'deducted_salary',
+        'final_salary',
         'is_deleted',
     ];
 }

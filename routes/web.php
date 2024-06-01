@@ -67,5 +67,8 @@ Route::controller(LeaveController::class)->group(function() {
 });
 
 Route::controller(RequestLeaveController::class)->group(function() {
+    Route::get('/request/leaves', 'index');
     Route::get('/request/leave/create', 'create');
+
+    Route::post('/request/leave/store', 'store');
 });
