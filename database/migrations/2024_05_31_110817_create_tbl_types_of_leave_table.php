@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tbl_types_of_leave', function (Blueprint $table) {
             $table->id('leave_id');
             $table->string('leave');
+            $table->double('number_of_days')->default(0);
             $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
         });

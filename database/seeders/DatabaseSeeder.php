@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Gender;
 use App\Models\Position;
+use App\Models\TypesOfLeave;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -129,5 +130,50 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Employee::factory(100)->create();
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'SERVICE INCENTIVE LEAVE (SIL)',
+            'number_of_days' => 5,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'VACATION LEAVE (VL)',
+            'number_of_days' => 15,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'MATERNITY LEAVE',
+            'number_of_days' => 105,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'PATERNITY LEAVE',
+            'number_of_days' => 14,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'SOLO PARENT LEAVE',
+            'number_of_days' => 7,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'SICK LEAVE',
+            'number_of_days' => 15,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'CASUAL LEAVE',
+            'number_of_days' => 15,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'BEREAVEMENT LEAVE',
+            'number_of_days' => 7,
+        ]);
+
+        TypesOfLeave::factory()->create([
+            'leave' => 'EMERGENCY LEAVE',
+            'number_of_days' => 5,
+        ]);
     }
 }

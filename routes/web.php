@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\RequestLeaveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,4 +53,19 @@ Route::controller(PositionController::class)->group(function() {
     Route::post('/position/store', 'store');
     Route::put('/position/update/{position}', 'update');
     Route::delete('/position/destroy/{position}', 'destroy');
+});
+
+Route::controller(LeaveController::class)->group(function() {
+    Route::get('/leaves', 'index');
+    Route::get('/leave/create', 'create');
+    Route::get('/leave/edit/{leave_id}', 'edit');
+    Route::get('/leave/delete/{leave_id}', 'delete');
+
+    Route::post('/leave/store', 'store');
+    Route::put('/leave/update/{leave}', 'update');
+    Route::delete('/leave/destroy/{leave}', 'destroy');
+});
+
+Route::controller(RequestLeaveController::class)->group(function() {
+    Route::get('/request/leave/create', 'create');
 });
