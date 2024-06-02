@@ -22,10 +22,10 @@ return new class extends Migration
             $table->date('leave_date_to');
             $table->date('attended_date_from')->nullable();
             $table->date('attended_date_to')->nullable();
-            $table->double('salary_deduction_per_day')->default(0);
-            $table->double('deducted_salary')->default(0);
-            $table->double('final_salary')->default(0);
-            $table->double('remaining_days')->default(0);
+            $table->double('salary_deduction_per_day')->nullable()->default(0);
+            $table->double('deducted_salary')->nullable()->default(0);
+            $table->double('final_salary')->nullable()->default(0);
+            $table->double('remaining_days')->nullable()->default(0);
             $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
 

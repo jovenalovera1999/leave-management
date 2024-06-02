@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Gender;
 use App\Models\Position;
 use App\Models\TypesOfLeave;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        User::factory()->create([
+            'first_name' => 'MERNARD',
+            'middle_name' => null,
+            'last_name' => 'VEGA',
+            'suffix_name' => null,
+            'username' => 'VEGA123',
+            'password' => bcrypt('VEGA123'),
+        ]);
 
         Gender::factory()->create([
             'gender' => 'MALE',

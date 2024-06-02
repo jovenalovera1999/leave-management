@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="search">SEARCH</label>
-                            <input type="text" class="form-control mb-3" name="search" id="search" />
+                            <input type="text" class="form-control mb-3" name="search_text" id="search_text" />
                         </div>
                         <div class="col-md-4">
                             <label for="date_from">FROM</label>
@@ -78,8 +78,8 @@
                                     <td>{{ date('m/d/Y h:i A', strtotime($requestLeave->created_at)) }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="#" class="btn btn-primary">EDIT</a>
-                                            <a href="#" class="btn btn-primary">DELETE</a>
+                                            <a href="/request/leave/edit/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">EDIT</a>
+                                            <a href="/request/leave/delete/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">DELETE</a>
                                         </div>
                                     </td>
                                 </tr>
