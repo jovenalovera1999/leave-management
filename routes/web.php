@@ -19,10 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/request/leave/print', function() {
-    return view('request_leave.print');
-});
-
 Route::controller(UserController::class)->group(function() {
     Route::get('/', 'index')->name('login');
     Route::post('/process/login', 'processLogin');
@@ -82,6 +78,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/request/leave/create', 'create');
         Route::get('/request/leave/edit/{request_leave_id}', 'edit');
         Route::get('/request/leave/delete/{request_leave_id}', 'delete');
+        Route::get('/request/leave/print/{request_leave_id}', 'print');
 
         Route::post('/request/leave/store', 'store');
         Route::put('/request/leave/update/{request_leave}', 'update');

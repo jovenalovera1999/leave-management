@@ -80,6 +80,7 @@
                                         <div class="btn-group">
                                             <a href="/request/leave/edit/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">EDIT</a>
                                             <a href="/request/leave/delete/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">DELETE</a>
+                                            <a href="/request/leave/print/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">PRINT</a>
                                         </div>
                                     </td>
                                 </tr>

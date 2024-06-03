@@ -188,4 +188,14 @@ class RequestLeaveController extends Controller
 
         return redirect('/request/leaves')->with('success', 'REQUEST LEAVE SUCCESSFULLY DELETED.');
     }
+
+    public function print($request_leave_id) {
+        $requestLeave = RequestLeave::leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
+            ->leftJoin('tbl_departments', 'tbl_employees.department_id', '=', 'tbl_departments.department_id')
+            ->leftJoin('tbl_positions', 'tbl_employees.position_id', '=', 'tbl_positions.position_id')
+            ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
+            ->find($request_leave_id);
+
+        return view('request_leave.print', compact('requestLeave'));
+    }
 }
