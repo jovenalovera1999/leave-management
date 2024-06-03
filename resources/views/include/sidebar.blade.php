@@ -11,7 +11,6 @@
         <!-- .nav-menu -->
         <nav id="navbar" class="nav-menu navbar">
             <ul>
-                <li><a href="#"><span>DASHBOARD</span></a></li>
                 <li><a href="/request/leaves"><span>REQUEST LEAVES</span></a></li>
                 <li><a href="/employees"><span>EMPLOYEES</span></a></li>
                 <li><a href="/departments"><span>DEPARTMENTS</span></a></li>
