@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/request/leave/print', function() {
+    return view('request_leave.print');
+});
+
 Route::controller(UserController::class)->group(function() {
     Route::get('/', 'index')->name('login');
     Route::post('/process/login', 'processLogin');
