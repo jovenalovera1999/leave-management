@@ -28,30 +28,11 @@
     <p class="mb-5"><strong>POSITION:</strong> <u>{{ $requestLeave->position }}</u></p>
     <div class="row mb-3">
         <div class="col-md-4">
-            <p><strong class="fs-4">REGULAR DATE SCHEDULE</strong></p>
-            <p>{{ date('m/d/Y', strtotime($requestLeave->regular_schedule_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->regular_schedule_date_to)) }}</p>
-        </div>
-        <div class="col-md-4">
             <p><strong class="fs-4">LEAVE DETAILS</strong></p>
             <p><strong>LEAVE TYPE:</strong> {{ $requestLeave->leave }}</p>
             <p>{{ date('m/d/Y', strtotime($requestLeave->leave_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->leave_date_to)) }}</p>
+            <p><strong>REMAINING CREDITS:</strong> {{ $requestLeave->remaining_credits }}</p>
         </div>
-        <div class="col-md-4">
-            <p><strong class="fs-4">ATTENDED DATE</strong></p>
-            <p>
-                @if (empty($requestLeave->attended_date_from) && empty($requestLeave->requestLeave->attended_date_to))
-                    N/A
-                @else
-                    {{ date('m/d/Y', strtotime($requestLeave->attended_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->attended_date_from)) }}
-                @endif
-            </p>
-        </div>
-    </div>
-    <p><strong class="fs-4">SALARY DETAILS</strong></p>
-    <p><strong>REGULAR SALARY:</strong> {{ number_format($requestLeave->regular_salary, 2, '.', ',') }}</p>
-    <p><strong>SALARY DEDUCTION PER DAY:</strong> {{ (empty($requestLeave->salary_deduction_per_day)) ? 'N/A' : number_format($requestLeave->salary_deduction_per_day, 2, '.', ',') }}</p>
-    <p><strong>DEDUCTED SALARY:</strong> {{ (empty($requestLeave->deducted_salary)) ? 'N/A' : number_format($requestLeave->deducted_salary, 2, '.', ',') }}</p>
-    <p><strong>FINAL SALARY:</strong> {{ (empty($requestLeave->final_salary)) ? 'N/A' : number_format($requestLeave->final_salary, 2, '.', ',') }}</p>
 </section>
 
 <script>

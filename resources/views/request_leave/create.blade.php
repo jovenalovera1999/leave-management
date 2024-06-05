@@ -25,20 +25,12 @@
                                         <select class="form-select" name="employee" id="employee">
                                             <option value="" selected>N/A</option>
                                             @foreach ($employees as $employee)
-                                                <option value="{{ $employee->employee_id }}">{{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}</option>
-                                                @if (old('employee') == $employee->employee_id)
-                                                    <option value="{{ $employee->employee_id }}" selected hidden>{{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}</option>
-                                                @endif
+                                                <option value="{{ $employee->employee_id }}" {{ (old('employee') == $employee->employee_id) ? 'selected' : '' }}>
+                                                    {{ ($employee->middle_name) ? $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->middle_name[0] . '. ' . $employee->suffix_name : $employee->last_name . ', ' . $employee->first_name . ' ' . $employee->suffix_name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('employee')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="regular_salary">REGULAR SALARY</label>
-                                        <input type="text" class="form-control" name="regular_salary" id="regular_salary" value="{{ old('regular_salary') }}" />
-                                        @error('regular_salary')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -48,39 +40,15 @@
                         <div class="col-md-6">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title">REGULAR DATE SCHEDULE</h5>
-                                    <div class="mb-3">
-                                        <label for="regular_schedule_date_from">FROM</label>
-                                        <input type="date" class="form-control" name="regular_schedule_date_from" id="regular_schedule_date_from" value="{{ old('regular_schedule_date_from') }}" />
-                                        @error('regular_schedule_date_from')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="regular_schedule_date_to">TO</label>
-                                        <input type="date" class="form-control" name="regular_schedule_date_to" id="regular_schedule_date_to" value="{{ old('regular_schedule_date_to') }}" />
-                                        @error('regular_schedule_date_to')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
                                     <h5 class="card-title">LEAVE DETAILS</h5>
                                     <div class="mb-3">
                                         <label for="leave">LEAVE TYPE</label>
                                         <select class="form-select" name="leave" id="leave">
                                             <option value="" selected>N/A</option>
                                             @foreach ($leaves as $leave)
-                                                <option value="{{ $leave->leave_id }}">{{ $leave->leave }}</option>
-                                                @if (old('leave') == $leave->leave_id)
-                                                    <option value="{{ $leave->leave_id }}" selected hidden>{{ $leave->leave }}</option>
-                                                @endif
+                                                <option value="{{ $leave->leave_id }}" {{ (old('leave') == $leave->leave_id) ? 'selected' : '' }}>
+                                                    {{ $leave->leave }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('leave')
@@ -96,50 +64,10 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="leave_date_to">TO</label>
-                                        <input type="date" class="form-control" name="leave_date_to" id="leave_date_to" {{ old('leave_date_to') }} />
+                                        <input type="date" class="form-control" name="leave_date_to" id="leave_date_to" value="{{ old('leave_date_to') }}" />
                                         @error('leave_date_to')
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">ATTENDED DATE</h5>
-                                    <div class="mb-3">
-                                        <label for="attended_date_from">FROM</label>
-                                        <input type="date" class="form-control" name="attended_date_from" id="attended_date_from" value="{{ old('attended_date_from') }}" />
-                                        @error('attended_date_from')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="attended_date_to">TO</label>
-                                        <input type="date" class="form-control" name="attended_date_to" id="attended_date_to" value="{{ old('attended_date_to') }}" />
-                                        @error('attended_date_to')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">SALARY DETAILS</h5>
-                                    <div class="mb-3">
-                                        <label for="salary_deduction_per_day">SALARY DEDUCTION PER DAY</label>
-                                        <input type="text" class="form-control" name="salary_deduction_per_day" id="salary_deduction_per_day" value="{{ old('salary_deduction_per_day') }}" readonly />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="deducted_salary">DEDUCTED SALARY</label>
-                                        <input type="text" class="form-control" name="deducted_salary" id="deducted_salary" value="{{ old('deducted_salary') }}" readonly />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="final_salary">FINAL SALARY</label>
-                                        <input type="number" step="0.01" class="form-control" name="final_salary" id="final_salary" value="{{ old('final_salary') }}" readonly />
                                     </div>
                                 </div>
                             </div>

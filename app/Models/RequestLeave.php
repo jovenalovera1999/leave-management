@@ -13,17 +13,9 @@ class RequestLeave extends Model
     protected $primaryKey = 'request_leave_id';
     protected $fillable = [
         'employee_id',
-        'regular_salary',
-        'regular_schedule_date_from',
-        'regular_schedule_date_to',
         'leave_id',
         'leave_date_from',
         'leave_date_to',
-        'attended_date_from',
-        'attended_date_to',
-        'salary_deduction_per_day',
-        'deducted_salary',
-        'final_salary',
         'is_deleted',
     ];
 }

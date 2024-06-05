@@ -39,14 +39,9 @@
                             <tr>
                                 <th scope="col">NO.</th>
                                 <th scope="col">EMPLOYEE'S NAME</th>
-                                <th scope="col">REGULAR SALARY</th>
-                                <th scope="col">REGULAR SCHEDULE DATE</th>
                                 <th scope="col">LEAVE TYPE</th>
                                 <th scope="col">LEAVE DATE</th>
-                                <th scope="col">ATTENDED DATE</th>
-                                <th scope="col">SALARY DEDUCTION PER DAY</th>
-                                <th scope="col">DEDUCTED SALARY</th>
-                                <th scope="col">FINAL SALARY</th>
+                                <th scope="col">REMAINING CREDITS</th>
                                 <th scope="col">DATE CREATED</th>
                                 <th scope="col">ACTION</th>
                             </tr>
@@ -61,20 +56,11 @@
                                     <td>
                                         {{ ($requestLeave->middle_name) ? $requestLeave->last_name . ', ' . $requestLeave->first_name . ' ' . $requestLeave->middle_name[0] . '. ' . $requestLeave->suffix_name : $requestLeave->last_name . ', ' . $requestLeave->first_name . ' ' . $requestLeave->suffix_name }}
                                     </td>
-                                    <td>{{ number_format($requestLeave->regular_salary, 2, '.', ',') }}</td>
-                                    <td>
-                                        {{ date('m/d/Y', strtotime($requestLeave->regular_schedule_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->regular_schedule_date_to)) }}
-                                    </td>
                                     <td>{{ $requestLeave->leave }}</td>
                                     <td>
                                         {{ date('m/d/Y', strtotime($requestLeave->leave_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->leave_date_to)) }}
                                     </td>
-                                    <td>
-                                        {{ ($requestLeave->attended_date_from || $requestLeave->attended_date_to) ? date('m/d/Y', strtotime($requestLeave->attended_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->attended_date_to)) : 'N/A' }}
-                                    </td>
-                                    <td>{{ number_format($requestLeave->salary_deduction_per_day, 2, '.', ',') }}</td>
-                                    <td>{{ number_format($requestLeave->deducted_salary, 2, '.', ',') }}</td>
-                                    <td>{{ number_format($requestLeave->final_salary, 2, '.', ',') }}</td>
+                                    <td>{{ $requestLeave->remaining_credits . ' CREDITS LEFT' }}</td>
                                     <td>{{ date('m/d/Y h:i A', strtotime($requestLeave->created_at)) }}</td>
                                     <td>
                                         <div class="btn-group">
