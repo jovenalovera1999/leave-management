@@ -31,6 +31,12 @@ class RequestLeaveController extends Controller
             ->orderBy('tbl_request_leaves.created_at', 'desc')
             ->orderBy('tbl_employees.last_name', 'asc');
 
+        foreach($requestLeaves as $requestLeave) {
+            if($requestLeave->remaining_credits == 0) {
+                $requestLeave->remaining_credits = 0;
+            }
+        }
+
         if(request()->has('search_text')) {
             $searchText = request()->get('search_text');
 
@@ -201,26 +207,33 @@ class RequestLeaveController extends Controller
             'leave_date_to' => ['required', 'date'],
         ]);
 
-        $typeOfLeave = TypesOfLeave::where('tbl_types_of_leave.leave_id', $validated['leave'])
-            ->first();
+        // $requestLeave = RequestLeave::select(
+        //         'tbl_request_leaves.request_leave_id',
+        //         'tbl_employees.first_name',
+        //         'tbl_employees.middle_name',
+        //         'tbl_employees.last_name',
+        //         'tbl_employees.suffix_name',
+        //         'tbl_types_of_leave.leave',
+        //         'tbl_types_of_leave.number_of_days',
+        //         'tbl_request_leaves.leave_date_from',
+        //         'tbl_request_leaves.leave_date_to',
+        //         'tbl_request_leaves.created_at',
+        //         DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
+        //     )
+        //     ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
+        //     ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
+        //     ->where('tbl_employees.employee_id', $validated['employee'])
+        //     ->where('tbl_types_of_leave.leave_id', $validated['leave'])
+        //     ->where('tbl_request_leaves.is_deleted', false)
+        //     ->first();
 
-        $leaveDateFrom = Carbon::createFromFormat('Y-m-d', $validated['leave_date_from']);
-        $leaveDateTo = Carbon::createFromFormat('Y-m-d', $validated['leave_date_to']);
-        $numberOfLeaveDays = $leaveDateTo->diffInDays($leaveDateFrom) + 1;
-
-        $remainingCredits = $typeOfLeave->number_of_days - $numberOfLeaveDays;
-
-        if($remainingCredits >= 0) {
-            RequestLeave::create([
-                'employee_id' => $validated['employee'],
-                'leave_id' => $validated['leave'],
-                'leave_date_from' => $validated['leave_date_from'],
-                'leave_date_to' => $validated['leave_date_to'],
-            ]);
-        } else {
-            return back()->withInput()->with('failed', 'FAILED TO ADD REQUEST LEAVE, REMAINING CREDITS MUST NOT LESS THAN 0.');
-        }
-
+        RequestLeave::create([
+            'employee_id' => $validated['employee'],
+            'leave_id' => $validated['leave'],
+            'leave_date_from' => $validated['leave_date_from'],
+            'leave_date_to' => $validated['leave_date_to'],
+        ]);
+        
         return redirect('/request/leaves')->with('success', 'REQUEST LEAVE SUCCESSFULLY ADDED.');
     }
 
