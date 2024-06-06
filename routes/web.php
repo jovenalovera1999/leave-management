@@ -75,12 +75,17 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::controller(RequestLeaveController::class)->group(function() {
         Route::get('/request/leaves', 'index');
+        Route::get('/request/leaves/approved', 'indexApproved');
+        Route::get('/request/leaves/pending', 'indexPending');
         Route::get('/request/leave/create', 'create');
         Route::get('/request/leave/edit/{request_leave_id}', 'edit');
         Route::get('/request/leave/delete/{request_leave_id}', 'delete');
         Route::get('/request/leave/print/{request_leave_id}', 'print');
 
         Route::post('/request/leave/store', 'store');
+        Route::put('/leave/request/update/to/approved/with/pay/{request_leave}', 'updateToApprovedWithPay');
+        Route::put('/leave/request/update/to/approved/without/pay/{request_leave}', 'updateToApprovedWithoutPay');
+        Route::put('/leave/request/update/to/pending/{request_leave}', 'updateToPending');
         Route::put('/request/leave/update/{request_leave}', 'update');
         Route::delete('/request/leave/destroy/{request_leave}', 'destroy');
     });

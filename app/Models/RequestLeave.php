@@ -16,6 +16,8 @@ class RequestLeave extends Model
         'leave_id',
         'leave_date_from',
         'leave_date_to',
+        'is_with_pay',
+        'is_approved',
         'is_deleted',
     ];
 }

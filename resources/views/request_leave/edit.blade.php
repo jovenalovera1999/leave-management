@@ -74,6 +74,7 @@
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    <p><strong>REMAINING CREDITS: </strong>{{ $requestLeave->remaining_credits }}</p>
                                 </div>
                             </div>
                         </div>

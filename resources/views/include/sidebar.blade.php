@@ -11,6 +11,8 @@
         <!-- .nav-menu -->
         <nav id="navbar" class="nav-menu navbar">
             <ul>
+                <li><a href="/request/leaves/approved"><span>APPROVED REQUEST<br>LEAVES</span></a></li>
+                <li><a href="/request/leaves/pending"><span>PENDING REQUEST<br>LEAVES</span></a></li>
                 <li><a href="/request/leaves"><span>REQUEST LEAVES</span></a></li>
                 <li><a href="/employees"><span>EMPLOYEES</span></a></li>
                 <li><a href="/departments"><span>DEPARTMENTS</span></a></li>

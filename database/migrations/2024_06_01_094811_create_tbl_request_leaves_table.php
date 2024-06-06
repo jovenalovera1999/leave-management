@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('leave_id');
             $table->date('leave_date_from');
             $table->date('leave_date_to');
+            $table->tinyInteger('is_with_pay')->default(false);
+            $table->tinyInteger('is_approved')->default(false);
             $table->tinyInteger('is_deleted')->default(false);
             $table->timestamps();
 
