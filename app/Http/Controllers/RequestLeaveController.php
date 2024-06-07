@@ -23,19 +23,35 @@ class RequestLeaveController extends Controller
                 'tbl_request_leaves.leave_date_from',
                 'tbl_request_leaves.leave_date_to',
                 'tbl_request_leaves.created_at',
-                DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
+                DB::raw(
+                    '
+                    CASE
+                        WHEN (
+                            SELECT SUM(DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1)
+                            FROM tbl_request_leaves
+                            WHERE tbl_request_leaves.employee_id = tbl_request_leaves.employee_id
+                            AND tbl_request_leaves.leave_id = tbl_request_leaves.leave_id
+                            AND tbl_request_leaves.is_deleted = false
+                            AND tbl_request_leaves.created_at <= tbl_request_leaves.created_at
+                        ) > tbl_types_of_leave.number_of_days THEN 0
+                        ELSE GREATEST(
+                            tbl_types_of_leave.number_of_days - (
+                                SELECT SUM(DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1)
+                                FROM tbl_request_leaves
+                                WHERE tbl_request_leaves.employee_id = tbl_request_leaves.employee_id
+                                AND tbl_request_leaves.leave_id = tbl_request_leaves.leave_id
+                                AND tbl_request_leaves.is_deleted = false
+                                AND tbl_request_leaves.created_at <= tbl_request_leaves.created_at
+                            ), 0
+                        )
+                    END as remaining_credits'
+                )
             )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
             ->where('tbl_request_leaves.is_deleted', false)
             ->orderBy('tbl_request_leaves.created_at', 'desc')
             ->orderBy('tbl_employees.last_name', 'asc');
-
-        foreach($requestLeaves as $requestLeave) {
-            if($requestLeave->remaining_credits == 0) {
-                $requestLeave->remaining_credits = 0;
-            }
-        }
 
         if(request()->has('search_text')) {
             $searchText = request()->get('search_text');
@@ -133,18 +149,18 @@ class RequestLeaveController extends Controller
     public function indexPending()
     {
         $requestLeaves = RequestLeave::select(
-            'tbl_request_leaves.request_leave_id',
-            'tbl_employees.first_name',
-            'tbl_employees.middle_name',
-            'tbl_employees.last_name',
-            'tbl_employees.suffix_name',
-            'tbl_types_of_leave.leave',
-            'tbl_types_of_leave.number_of_days',
-            'tbl_request_leaves.leave_date_from',
-            'tbl_request_leaves.leave_date_to',
-            'tbl_request_leaves.created_at',
-            DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
-        )
+                'tbl_request_leaves.request_leave_id',
+                'tbl_employees.first_name',
+                'tbl_employees.middle_name',
+                'tbl_employees.last_name',
+                'tbl_employees.suffix_name',
+                'tbl_types_of_leave.leave',
+                'tbl_types_of_leave.number_of_days',
+                'tbl_request_leaves.leave_date_from',
+                'tbl_request_leaves.leave_date_to',
+                'tbl_request_leaves.created_at',
+                DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
+            )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
             ->where('tbl_request_leaves.is_approved', false)

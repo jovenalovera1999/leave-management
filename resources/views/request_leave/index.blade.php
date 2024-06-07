@@ -60,7 +60,9 @@
                                     <td>
                                         {{ date('m/d/Y', strtotime($requestLeave->leave_date_from)) . ' - ' . date('m/d/Y', strtotime($requestLeave->leave_date_to)) }}
                                     </td>
-                                    <td>{{ $requestLeave->remaining_credits . ' CREDITS LEFT' }}</td>
+                                    <td>
+                                        {{ $requestLeave->remaining_credits . ' CREDITS LEFT' }}
+                                    </td>
                                     <td>{{ date('m/d/Y h:i A', strtotime($requestLeave->created_at)) }}</td>
                                     <td>
                                         <div class="btn-group">
