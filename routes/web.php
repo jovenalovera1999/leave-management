@@ -80,7 +80,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/request/leave/create', 'create');
         Route::get('/request/leave/edit/{request_leave_id}', 'edit');
         Route::get('/request/leave/delete/{request_leave_id}', 'delete');
-        Route::get('/request/leave/print/{request_leave_id}', 'print');
+        Route::get('/request/leave/approved/print/{request_leave_id}', 'print');
 
         Route::post('/request/leave/store', 'store');
         Route::put('/leave/request/update/to/approved/with/pay/{request_leave}', 'updateToApprovedWithPay');

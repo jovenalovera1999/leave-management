@@ -74,6 +74,7 @@
                                                 <button type="submit" class="btn btn-primary">SET TO PENDING</button>
                                             </form>
                                             <a href="/request/leave/delete/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">DELETE</a>
+                                            <a href="/request/leave/approved/print/{{ $requestLeave->request_leave_id }}" class="btn btn-primary">PRINT</a>
                                         </div>
                                     </td>
                                 </tr>

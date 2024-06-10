@@ -23,29 +23,28 @@ class RequestLeaveController extends Controller
                 'tbl_request_leaves.leave_date_from',
                 'tbl_request_leaves.leave_date_to',
                 'tbl_request_leaves.created_at',
-                DB::raw(
-                    '
+                DB::raw('
                     CASE
                         WHEN (
-                            SELECT SUM(DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1)
-                            FROM tbl_request_leaves
-                            WHERE tbl_request_leaves.employee_id = tbl_request_leaves.employee_id
-                            AND tbl_request_leaves.leave_id = tbl_request_leaves.leave_id
-                            AND tbl_request_leaves.is_deleted = false
-                            AND tbl_request_leaves.created_at <= tbl_request_leaves.created_at
+                            SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                            FROM tbl_request_leaves AS subquery
+                            WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                            AND subquery.leave_id = tbl_request_leaves.leave_id
+                            AND subquery.is_deleted = false
+                            AND subquery.created_at <= tbl_request_leaves.created_at
                         ) > tbl_types_of_leave.number_of_days THEN 0
                         ELSE GREATEST(
                             tbl_types_of_leave.number_of_days - (
-                                SELECT SUM(DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1)
-                                FROM tbl_request_leaves
-                                WHERE tbl_request_leaves.employee_id = tbl_request_leaves.employee_id
-                                AND tbl_request_leaves.leave_id = tbl_request_leaves.leave_id
-                                AND tbl_request_leaves.is_deleted = false
-                                AND tbl_request_leaves.created_at <= tbl_request_leaves.created_at
+                                SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                                FROM tbl_request_leaves AS subquery
+                                WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                                AND subquery.leave_id = tbl_request_leaves.leave_id
+                                AND subquery.is_deleted = false
+                                AND subquery.created_at <= tbl_request_leaves.created_at
                             ), 0
                         )
                     END as remaining_credits'
-                )
+                ),
             )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
@@ -91,19 +90,40 @@ class RequestLeaveController extends Controller
     public function indexApproved()
     {
         $requestLeaves = RequestLeave::select(
-            'tbl_request_leaves.request_leave_id',
-            'tbl_employees.first_name',
-            'tbl_employees.middle_name',
-            'tbl_employees.last_name',
-            'tbl_employees.suffix_name',
-            'tbl_types_of_leave.leave',
-            'tbl_types_of_leave.number_of_days',
-            'tbl_request_leaves.leave_date_from',
-            'tbl_request_leaves.leave_date_to',
-            DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
-            'tbl_request_leaves.is_with_pay',
-            'tbl_request_leaves.created_at',
-        )
+                'tbl_request_leaves.request_leave_id',
+                'tbl_employees.first_name',
+                'tbl_employees.middle_name',
+                'tbl_employees.last_name',
+                'tbl_employees.suffix_name',
+                'tbl_types_of_leave.leave',
+                'tbl_types_of_leave.number_of_days',
+                'tbl_request_leaves.leave_date_from',
+                'tbl_request_leaves.leave_date_to',
+                'tbl_request_leaves.created_at',
+                DB::raw(
+                    '
+                        CASE
+                            WHEN (
+                                SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                                FROM tbl_request_leaves AS subquery
+                                WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                                AND subquery.leave_id = tbl_request_leaves.leave_id
+                                AND subquery.is_deleted = false
+                                AND subquery.created_at <= tbl_request_leaves.created_at
+                            ) > tbl_types_of_leave.number_of_days THEN 0
+                            ELSE GREATEST(
+                                tbl_types_of_leave.number_of_days - (
+                                    SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                                    FROM tbl_request_leaves AS subquery
+                                    WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                                    AND subquery.leave_id = tbl_request_leaves.leave_id
+                                    AND subquery.is_deleted = false
+                                    AND subquery.created_at <= tbl_request_leaves.created_at
+                                ), 0
+                            )
+                        END as remaining_credits'
+                ),
+            )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
             ->where('tbl_request_leaves.is_approved', true)
@@ -159,7 +179,28 @@ class RequestLeaveController extends Controller
                 'tbl_request_leaves.leave_date_from',
                 'tbl_request_leaves.leave_date_to',
                 'tbl_request_leaves.created_at',
-                DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
+                DB::raw('
+                    CASE
+                        WHEN (
+                            SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                            FROM tbl_request_leaves AS subquery
+                            WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                            AND subquery.leave_id = tbl_request_leaves.leave_id
+                            AND subquery.is_deleted = false
+                            AND subquery.created_at <= tbl_request_leaves.created_at
+                        ) > tbl_types_of_leave.number_of_days THEN 0
+                        ELSE GREATEST(
+                            tbl_types_of_leave.number_of_days - (
+                                SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                                FROM tbl_request_leaves AS subquery
+                                WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                                AND subquery.leave_id = tbl_request_leaves.leave_id
+                                AND subquery.is_deleted = false
+                                AND subquery.created_at <= tbl_request_leaves.created_at
+                            ), 0
+                        )
+                    END as remaining_credits'
+                ),
             )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
@@ -222,26 +263,6 @@ class RequestLeaveController extends Controller
             'leave_date_from' => ['required', 'date'],
             'leave_date_to' => ['required', 'date'],
         ]);
-
-        // $requestLeave = RequestLeave::select(
-        //         'tbl_request_leaves.request_leave_id',
-        //         'tbl_employees.first_name',
-        //         'tbl_employees.middle_name',
-        //         'tbl_employees.last_name',
-        //         'tbl_employees.suffix_name',
-        //         'tbl_types_of_leave.leave',
-        //         'tbl_types_of_leave.number_of_days',
-        //         'tbl_request_leaves.leave_date_from',
-        //         'tbl_request_leaves.leave_date_to',
-        //         'tbl_request_leaves.created_at',
-        //         DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
-        //     )
-        //     ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
-        //     ->leftJoin('tbl_types_of_leave', 'tbl_request_leaves.leave_id', '=', 'tbl_types_of_leave.leave_id')
-        //     ->where('tbl_employees.employee_id', $validated['employee'])
-        //     ->where('tbl_types_of_leave.leave_id', $validated['leave'])
-        //     ->where('tbl_request_leaves.is_deleted', false)
-        //     ->first();
 
         RequestLeave::create([
             'employee_id' => $validated['employee'],
@@ -367,18 +388,38 @@ class RequestLeaveController extends Controller
 
     public function print($request_leave_id) {
         $requestLeave = RequestLeave::select(
+                'tbl_request_leaves.request_leave_id',
                 'tbl_employees.first_name',
                 'tbl_employees.middle_name',
                 'tbl_employees.last_name',
                 'tbl_employees.suffix_name',
-                'tbl_departments.department',
-                'tbl_positions.position',
                 'tbl_types_of_leave.leave',
                 'tbl_types_of_leave.number_of_days',
                 'tbl_request_leaves.leave_date_from',
                 'tbl_request_leaves.leave_date_to',
                 'tbl_request_leaves.created_at',
-                DB::raw('number_of_days - (DATEDIFF(tbl_request_leaves.leave_date_to, tbl_request_leaves.leave_date_from) + 1) as remaining_credits'),
+                DB::raw('
+                    CASE
+                        WHEN (
+                            SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                            FROM tbl_request_leaves AS subquery
+                            WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                            AND subquery.leave_id = tbl_request_leaves.leave_id
+                            AND subquery.is_deleted = false
+                            AND subquery.created_at <= tbl_request_leaves.created_at
+                        ) > tbl_types_of_leave.number_of_days THEN 0
+                        ELSE GREATEST(
+                            tbl_types_of_leave.number_of_days - (
+                                SELECT SUM(DATEDIFF(subquery.leave_date_to, subquery.leave_date_from) + 1)
+                                FROM tbl_request_leaves AS subquery
+                                WHERE subquery.employee_id = tbl_request_leaves.employee_id
+                                AND subquery.leave_id = tbl_request_leaves.leave_id
+                                AND subquery.is_deleted = false
+                                AND subquery.created_at <= tbl_request_leaves.created_at
+                            ), 0
+                        )
+                    END as remaining_credits'
+                ),
             )
             ->leftJoin('tbl_employees', 'tbl_request_leaves.employee_id', '=', 'tbl_employees.employee_id')
             ->leftJoin('tbl_departments', 'tbl_employees.department_id', '=', 'tbl_departments.department_id')
